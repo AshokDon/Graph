@@ -12,6 +12,8 @@ struct Graph {
     struct Node** adjList;
 };
 
+//creating a graph with n vertices and making them null initially
+
 struct Graph* CreatAGraph(int Vertices) {
     struct Graph *graph = malloc(sizeof(struct Graph));
     graph->numVertices = Vertices;
@@ -21,14 +23,14 @@ struct Graph* CreatAGraph(int Vertices) {
     }
     return graph;
 }
-
+//creat a node 
 struct Node* CreatANode(int data) {
     struct Node *newNode = malloc(sizeof(struct Node));
     newNode->data = data;
     newNode->next = NULL;
     return newNode;
 }
-
+//add the edges
 void addEdges(struct Graph *graph, int src, int dest) {
     struct Node *newNode = CreatANode(dest); // Create a node for destination
     newNode->next = graph->adjList[src];
