@@ -1,71 +1,65 @@
+//
 #include<stdio.h>
 #include<stdlib.h>
 
-struct Node {
+struct Node{
     int data;
     struct Node *next;
 };
-
-// Graph
-struct Graph {
+struct Graph{
     int numVertices;
     struct Node** adjList;
 };
-
-//creating a graph with n vertices and making them null initially
-
-struct Graph* CreatAGraph(int Vertices) {
-    struct Graph *graph = malloc(sizeof(struct Graph));
-    graph->numVertices = Vertices;
-    graph->adjList = malloc(Vertices * sizeof(struct Node*));
-    for(int i = 0; i < Vertices; i++) {
+struct Graph* CreatAGraph(int vertices){
+    struct Graph *graph = (struct Graph*)malloc(sizeof(struct Graph));
+    graph->numVertices = vertices;
+    graph->adjList = (struct Node**)malloc(vertices * sizeof(struct Node*));
+    for(int i = 0; i < vertices; i++){
         graph->adjList[i] = NULL;
     }
     return graph;
+    
 }
-//creat a node 
-struct Node* CreatANode(int data) {
-    struct Node *newNode = malloc(sizeof(struct Node));
+struct Node* creatANode(int data){
+    struct Node *newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->data = data;
     newNode->next = NULL;
     return newNode;
 }
-//add the edges
-void addEdges(struct Graph *graph, int src, int dest) {
-    struct Node *newNode = CreatANode(dest); // Create a node for destination
-    newNode->next = graph->adjList[src];
-    graph->adjList[src] = newNode;
 
-    newNode = CreatANode(src); // Create a node for source
-    newNode->next = graph->adjList[dest];
-    graph->adjList[dest] = newNode;
+void addEdges(struct Graph *graph, int u, int v){
+    //adding u -> v
+    struct Node *newNode = creatANode(v);
+    newNode->next = graph->adjList[u];
+    graph->adjList[u] = newNode;
+
+    //adding v -> u
+    newNode = creatANode(u);
+    newNode->next = graph->adjList[v];
+    graph->adjList[v] = newNode;
+
 }
-
-void PrintTheGraph(struct Graph *graph) {
-    for(int i = 0; i < graph->numVertices; i++) {
+void PrintTheGraph(struct Graph *graph){
+    for(int i = 0; i < graph->numVertices; i++){
         struct Node *temp = graph->adjList[i];
-        printf("The Adjacency List of vertex %d\n", i);
-        while(temp) {
-            printf("%d -> ", temp->data);
+        printf("The Adjacency List of vertex %d\n",i);
+        while(temp){
+            printf("%d -> ",temp->data);
             temp = temp->next;
         }
-        printf("NULL\n");
+        printf("\n");
     }
 }
 
-int main() {
-    int numVertices, numEdges;
-    scanf("%d %d", &numVertices, &numEdges);
+int main(){
+    int numVertices , numEges; // n --> no of nodes , e --> no of edges
+    scanf("%d %d",&numVertices,&numEges);
     struct Graph *graph = CreatAGraph(numVertices);
-
-    for(int i = 0; i < numEdges; i++) {
-        int u, v;
-        scanf("%d %d", &u, &v);
-        addEdges(graph, u, v);
+    for(int i = 0 ; i < numEges ; i++){
+        int u , v;
+        scanf("%d %d",&u,&v);
+        addEdges(graph,u,v);
     }
-
     PrintTheGraph(graph);
-
     
-    return 0;
 }
