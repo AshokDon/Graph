@@ -26,7 +26,6 @@ struct Node* creatANode(int data){
     newNode->next = NULL;
     return newNode;
 }
-
 void addEdges(struct Graph *graph, int u, int v){
     //adding u -> v
     struct Node *newNode = creatANode(v);
@@ -50,7 +49,38 @@ void PrintTheGraph(struct Graph *graph){
         printf("\n");
     }
 }
-
+void DFS(struct Graph *graph, int start, int visited[]){
+    visited[start] = 1; // 3
+    printf("%d",start); // 1 3
+    struct Node *temp = graph->adjList[start]; //head -> start
+    while(temp){
+        if(!visited[temp->data]){
+            DFS(graph,temp->data,visited);
+        }
+        temp = temp->next;
+    }
+}
+void BFS(struct Graph *graph, int start, int visited[]){
+    int queue[graph->numVertices]; //
+    int front = 0 , rear = 0; //
+    queue[rear] = start;
+    rear++;
+    visited[start] = 1;
+    while(front < rear){
+        int current = queue[front];
+        printf("%d",current);//
+        front++;//pop
+        struct Node *temp = graph->adjList[current];
+        while(temp){
+            if(!visited[temp->data]){
+                queue[rear] = temp->data;
+                rear++;
+                visited[temp->data] = 1;
+            }
+            temp = temp->next;
+        }
+    }
+}
 int main(){
     int numVertices , numEges; // n --> no of nodes , e --> no of edges
     scanf("%d %d",&numVertices,&numEges);
@@ -60,6 +90,11 @@ int main(){
         scanf("%d %d",&u,&v);
         addEdges(graph,u,v);
     }
-    PrintTheGraph(graph);
+    int visited[numVertices+1];
+    for(int i = 0; i < numVertices; i++){
+        visited[i] = 0;
+    }
+    //DFS(graph,1,visited);
+    BFS(graph,1,visited);
     
 }
