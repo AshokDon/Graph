@@ -54,20 +54,21 @@ ll inverse(ll a){
 
 
 void Don() {
-    int n , m;
+    int n , m, scr;
     cin >> n >> m;
     vector<pair<int,int>>adj[n+1];
     for(int i = 0 ; i < m ; i++){
         int v , u , wt;
         cin >> v >> u >> wt;
-        adj[u].pb({u,wt});
+        adj[u].pb({v,wt});
         adj[v].pb({u,wt});
     }
+    cin >> scr;
     //min heap with pair {distance , node}
     priority_queue<pair<int,int>, vector<pair<int,int>>,greater<pair<int,int>>>Q;
-    Q.push({0,1}); //{0,1};
+    Q.push({0,scr}); //{0,1};
     vi Distance(n+1,INT_MAX);
-    Distance[1] = 0;
+    //Distance[scr] = 0;
     
     vi vis(n+1,0);
     while(!Q.empty()){
@@ -76,17 +77,19 @@ void Don() {
         int node = front.second;
         int d = front.first;
         for(auto nbr : adj[node]){
-            if(vis[nbr.first] == 0 && Distance[nbr.first] > d + nbr.second){
+            if(vis[node] == 0 && Distance[nbr.first] > d + nbr.second){
                 Distance[nbr.first] = d + nbr.second;
-                Q.push({Distance[nbr.first],nbr.first});
+                Q.push({d+nbr.second, nbr.first});
             }
         }
         vis[node] = 1;
     }
     for(int i = 1 ; i <= n ; i++){
-        if(Distance[i]!=INT_MAX) cout << Distance[i]<<" ";
+        if(scr==i)continue;
+        else if(Distance[i]!=INT_MAX ) cout << Distance[i]<<" ";
         else cout << -1 <<" ";
     }
+    cout << "\n";
     
 
 
@@ -102,7 +105,9 @@ int main(){
     freopen("Error.txt","w",stderr);
     #endif
     fast_io;
-    Don();
+    ll t;
+    cin >> t;
+    while(t--)Don();
     
     
 }
